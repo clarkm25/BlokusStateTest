@@ -7,20 +7,20 @@ package com.example.blokusstatetest;
  * @version February 24th 2022
  */
 public class BlokusBlock {
-    private int color;
+    private int type;
     private int blockScore;
 
     /** No param ctor */
     public BlokusBlock()
     {
-        this.color = -1;
+        this.type = -1;
         this.blockScore = 5;
     }
 
     /** Getters of BlokusBlock variables */
-    public int getColor()
+    public int getType()
     {
-        return this.color;
+        return this.type;
     }
 
     public int getBlockScore()
@@ -29,9 +29,9 @@ public class BlokusBlock {
     }
 
     /** Setters of BlokusBlock variables */
-    public void setColor(int toSet)
+    public void setType(int toSet)
     {
-        this.color = toSet;
+        this.type = toSet;
     }
 
     public void setBlockScore(int toSet)
@@ -45,6 +45,6 @@ public class BlokusBlock {
     @Override
     public String toString()
     {
-        return "Color: " + this.color + " Score: " + this.blockScore;
+            return "Type: " + this.type + " Score: " + this.blockScore + "\n";
     }
 }

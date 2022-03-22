@@ -12,18 +12,17 @@ import android.graphics.Path;
  */
 public class BlokusGameState {
 
+    /** Declaration of an enum type representing the states a certain tile can have*/
+    public enum tileState{
+        EMPTY, LEGAL, RED, BLUE, YELLOW, GREEN
+    }
+
     /** Declaration of instance variables*/
     private int[] playerTurn;
     private int[] playerScore;
     private BlokusBlock [][] blockArray; //Represents each players collection of pieces
-    private int [][][] legalMoveArray; //Represent each player's legal moves on the board
+    private tileState[][] board;
     private boolean gameOn;
-
-    /** Declaration of final ints to represent red through yellow*/
-    private static final int RED = 1;
-    private static final int BLUE = 2;
-    private static final int GREEN = 3;
-    private static final int YELLOW = 4;
 
     /** Default ctor */
     public BlokusGameState() {
@@ -41,41 +40,21 @@ public class BlokusGameState {
         blockArray = new BlokusBlock[4][21];
         for(int i = 0; i<4; i++) {
             for (int j = 0; j<21; j++) {
-                /** Switch statement to set the appropriate block colors */
-                switch (i) {
-                    case 0:
                         this.blockArray[i][j] = new BlokusBlock();
-                        this.blockArray[i][j].setColor(RED);
-                        break;
-
-                    case 1:
-                        this.blockArray[i][j] = new BlokusBlock();
-                        this.blockArray[i][j].setColor(BLUE);
-                        break;
-
-                    case 2:
-                        this.blockArray[i][j] = new BlokusBlock();
-                        this.blockArray[i][j].setColor(GREEN);
-                        break;
-
-                    case 3:
-                        this.blockArray[i][j] = new BlokusBlock();
-                        this.blockArray[i][j].setColor(YELLOW);
-                        break;
+                        this.blockArray[i][j].setType(j);
                 }
             }
-        }
 
         /**
          *  Array representing the board and the legal moves within it
-         *  and all values are initially set to 0
+         *  and all values are initially set to EMPTY
          */
-        this.legalMoveArray = new int[4][20][20];
-        for(int i = 0; i<4; i++) {
-            for(int j = 0; j<20; j++) {
-                for (int k = 0; k<20; k++) {
-                    this.legalMoveArray[i][j][k] = 0;
-                }
+        this.board = new tileState[20][20];
+        for(int i = 0; i<20; i++)
+        {
+            for(int j = 0; j<20; j++)
+            {
+                this.board[i][j] = tileState.EMPTY;
             }
         }
     }
@@ -117,9 +96,16 @@ public class BlokusGameState {
         }
 
         /**
-         *  Copies array over from orig state using getter method.
+         *  Copies array over from orig state by going cell by cell to set the values;
          */
-        this.legalMoveArray = toCopy.getLegalMoveArray();
+        this.board = new tileState[20][20];
+        for(int i = 0; i<20; i++)
+        {
+            for(int j = 0; j<20; j++)
+            {
+                this.board[i][j] = toCopy.board[i][j];
+            }
+        }
     }
 
     /**
@@ -162,7 +148,7 @@ public class BlokusGameState {
      * @return boolean
      */
     public boolean placePiece(int playerNum, int xPos, int yPos, int pieceNum) {
-        if (this.legalMoveArray[playerNum][xPos][yPos]==0) {
+        if (this.board[xPos][yPos]==tileState.EMPTY) {
             this.playerScore[playerNum] += this.blockArray[playerNum][pieceNum].getBlockScore();
             return true;
         }
@@ -198,9 +184,7 @@ public class BlokusGameState {
         return legal;
     }
 
-    public int[][][] getLegalMoveArray() {
-        return legalMoveArray;
-    }
+    public tileState[][] getBoard() { return this.board; }
 
     /**
      * This will return a string version of the entire BlokusGameState
@@ -229,15 +213,13 @@ public class BlokusGameState {
         }
 
         /** Concatenates gameStateInfo with array of legal moves on the board */
-        for(int i = 0; i<4; i++) {
-            gameStateInfo += "Player " + (i+1) + " legalMoveArray: \n";
+        gameStateInfo += "Board of tile states: \n";
+        for(int i = 0; i<20; i++) {
             for(int j = 0; j<20; j++) {
-                for(int k = 0; k<20; k++) {
-                    gameStateInfo += this.legalMoveArray[i][j][k] + " ";
+                    gameStateInfo += this.board[i][j].toString() + " ";
                 }
                 gameStateInfo += "\n";
             }
-        }
         return gameStateInfo;
     }
 }
