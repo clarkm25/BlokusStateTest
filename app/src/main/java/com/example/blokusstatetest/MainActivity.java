@@ -45,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         /* String that gets appended to display the GameState in the multi text. */
         String gameStateData = "";
 
-        /* Path for a specific piece needed for rotation */
-        Path firstPiece = new Path();
-
         /* Creates instances of default and copy constructor */
         BlokusGameState firstInstance = new BlokusGameState();
         BlokusGameState firstCopy = new BlokusGameState(firstInstance);
@@ -56,11 +53,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          * Calls all methods within BlokusGameState and updates the textDisplay
          * accordingly after each step
          */
-        firstInstance.rotatePiece(0, firstPiece, 15, 15);
+        firstInstance.rotatePiece(firstInstance.getBlockArray()[0][0]);
         gameStateData += "Player one has rotated their first piece!\n";
         textDisplay.setText(gameStateData);
-        firstInstance.placePiece(0, 10, 10, 1);
-        gameStateData += "Player one has placed a piece at the position 10,10!\n";
+        firstInstance.calcLegalMoves(firstInstance.getBoard(), 1 );
+        if(firstInstance.placePiece(1, 0, 0, firstInstance.getBlockArray()[0][0]))
+        {
+            gameStateData += "Player one has placed a piece at the position 0,0!\n";
+        }
+        else
+        {
+            gameStateData += "Player one has failed to place a piece at the position 0,0!\n";
+        }
         textDisplay.setText(gameStateData);
         firstInstance.helpMenu();
         gameStateData += "The help menu has been opened!\n";

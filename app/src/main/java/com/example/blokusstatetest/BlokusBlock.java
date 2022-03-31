@@ -9,14 +9,40 @@ package com.example.blokusstatetest;
 public class BlokusBlock {
     private int type;
     private int blockScore;
+    private int[][] pieceArr;
 
     /** No param ctor */
     public BlokusBlock()
     {
-        this.type = -1;
-        this.blockScore = 5;
+        this.type = 5;
+        this.blockScore = 4;
+        this.pieceArr = new int[5][5];
+        for(int i = 0; i<5; i++)
+        {
+            for(int j = 0; j<5; j++)
+            {
+                this.pieceArr[i][j] = 0;
+            }
+        }
+        this.pieceArr[0][0] = 2;
+        this.pieceArr[0][1] = 1;
+        this.pieceArr[1][0] = 1;
+        this.pieceArr[1][1] = 1;
     }
 
+    public BlokusBlock(BlokusBlock toCopy)
+    {
+        this.type = toCopy.type;
+        this.blockScore = toCopy.blockScore;
+        this.pieceArr = new int[5][5];
+        for(int i = 0; i<5; i++)
+        {
+            for(int j = 0; j<5; j++)
+            {
+                this.pieceArr[i][j] = toCopy.pieceArr[i][j];
+            }
+        }
+    }
     /** Getters of BlokusBlock variables */
     public int getType()
     {
@@ -26,6 +52,11 @@ public class BlokusBlock {
     public int getBlockScore()
     {
         return this.blockScore;
+    }
+
+    public int[][] getPieceArr()
+    {
+        return this.pieceArr;
     }
 
     /** Setters of BlokusBlock variables */
@@ -39,12 +70,39 @@ public class BlokusBlock {
         this.blockScore = toSet;
     }
 
+    public void setPieceArr(int[][] toSet)
+    {
+        if(toSet == null)
+        {
+            return;
+        }
+        else
+        {
+            for(int i = 0; i<5; i++)
+            {
+                for(int j = 0; j<5; j++)
+                {
+                    this.pieceArr[i][j] = toSet[i][j];
+                }
+            }
+        }
+    }
+
     /**
      *  Returns a string version of the BlokusBlock
      */
     @Override
     public String toString()
     {
-            return "Type: " + this.type + " Score: " + this.blockScore + "\n";
+        String toReturn = "Type: " + this.type + " Score: " + this.blockScore + "\n";
+        for(int i = 0; i<5; i++)
+        {
+            for(int j = 0; j<5; j++)
+            {
+                toReturn += this.pieceArr[i][j] + " ";
+            }
+            toReturn += "\n";
+        }
+            return toReturn;
     }
 }
